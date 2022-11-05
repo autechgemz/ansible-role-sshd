@@ -52,7 +52,7 @@ sshd_service_ensure: 'started'
 
 ### sshd_service_enable:
 ```
-sshd_service_enable: false
+sshd_service_enable: true
 ```
 
 ### sshd_daemon_config_options
@@ -76,7 +76,7 @@ sshd_client_config_options:
           - 'LANG LC_CTYPE LC_NUMERIC LC_TIME LC_COLLATE LC_MONETARY LC_MESSAGES'
           - 'LC_PAPER LC_NAME LC_ADDRESS LC_TELEPHONE LC_MEASUREMENT'
           - 'LC_IDENTIFICATION LC_ALL LANGUAGE XMODIFIERS'
-``` 
+```
 
 ### sshd_server_config_options
 ```
