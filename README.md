@@ -52,7 +52,7 @@ sshd_service_ensure: 'started'
 
 ### sshd_service_enable:
 ```
-sshd_service_enable: True
+sshd_service_enable: false
 ```
 
 ### sshd_daemon_config_options
