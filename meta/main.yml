@@ -15,8 +15,9 @@ galaxy_info:
         - 35
     - name: Ubuntu
       versions:
-        - 18.04
-        - 20.04
+        - bionic
+        - focal
+        - jammy
   galaxy_tags:
     - ssh
     - sshd
