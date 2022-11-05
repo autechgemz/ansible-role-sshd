@@ -1,8 +1,7 @@
 ---
-
 - block:
   - name: Set OS family dependency variables
-    include_vars: "{{ lookup('first_found', params) }}" 
+    include_vars: "{{ lookup('first_found', params) }}"
     vars:
       params:
         files:
@@ -27,4 +26,3 @@
       (ansible_distribution == 'Ubuntu' and ansible_distribution_major_version|int >= 18)
   tags:
     - sshd
-

@@ -1,11 +1,9 @@
 ---
-
 - name: manage sshd service
   service:
     name: "{{ sshd_service_name }}"
     state: "{{ sshd_service_ensure }}"
     enabled: "{{ sshd_service_enable }}"
-
   tags:
     - sshd_service
     - sshd

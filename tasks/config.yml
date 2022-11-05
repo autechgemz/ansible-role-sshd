@@ -1,7 +1,5 @@
 ---
-
 - block:
-
   - name: remove generated files by the OS installer
     file:
       path: "{{ item }}"
@@ -11,8 +9,7 @@
     when:
       - sshd_remove_default_files is defined
       - ansible_os_family == 'RedHat' and ansible_distribution_major_version|int >= 8
-
-  - name: manage SSH daemon option 
+  - name: manage SSH daemon option
     template:
       src: sshd.j2
       dest: /etc/sysconfig/sshd
@@ -23,8 +20,7 @@
     when:
       - ansible_os_family == 'RedHat'
       - sshd_daemon_config_options is defined and sshd_daemon_config_options
-
-  - name: manage SSH daemon option 
+  - name: manage SSH daemon option
     template:
       src: sshd.j2
       dest: /etc/default/ssh
@@ -35,7 +31,6 @@
     when:
       - ansible_os_family == 'Debian'
       - sshd_daemon_config_options is defined and sshd_daemon_config_options
-
   - name: manage SSH server configration
     template:
       src: sshd.conf.j2
@@ -45,7 +40,6 @@
       mode: 0600
     notify: systemctl restart sshd
     when: sshd_server_config_options is defined and sshd_server_config_options
-
   - name: manage SSH client configration
     template:
       src: ssh.conf.j2
@@ -54,7 +48,6 @@
       group: root
       mode: 0644
     when: sshd_client_config_options is defined and sshd_client_config_options
-
   tags:
     - sshd_config
     - sshd

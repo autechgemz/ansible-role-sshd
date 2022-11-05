@@ -14,8 +14,8 @@ galaxy_info:
       - 35
   - name: Ubuntu
     versions:
-      - 18
-      - 20
+      - 18.04
+      - 20.04
   galaxy_tags:
     - ssh
     - sshd
