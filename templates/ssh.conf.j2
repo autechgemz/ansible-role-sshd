@@ -1,0 +1,32 @@
+# {{ ansible_managed }}
+{% if sshd_client_config_options is defined and sshd_client_config_options %}
+{% for key, value in sshd_client_config_options.items() %}
+{% if 'SendEnv' in key %}
+{% for line in value %}
+{{ key }} {{ line }}
+{% endfor %}
+{% elif 'Match' in key %}
+{% for line in value %}
+{{ key }} {{ line['criteria'] }} {{ line['pattern'] }}
+{% for match_config, match_value in line['keywords'].items() %}
+  {{ match_config }} {{ match_value }}
+{% endfor %}
+{% endfor %}
+{% elif 'Host' in key %}
+{% for line in value %}
+{{ key }} {{ line['pattern'] }}
+{% for match_config, match_value in line['keywords'].items() %}
+{% if 'SendEnv' in match_config %}
+{% for match_line in match_value %}
+  {{ match_config }} {{ match_line }}
+{% endfor %}
+{% else %}
+  {{ match_config }} {{ match_value }}
+{% endif %}
+{% endfor %}
+{% endfor %}
+{% else %}
+{{ key }} {{ value }}
+{% endif %}
+{% endfor %}
+{% endif %}

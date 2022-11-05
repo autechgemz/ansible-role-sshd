@@ -1,0 +1,11 @@
+---
+
+- name: install sshd package
+  package:
+    name: [ "{{ item }}" ]
+    state: present
+  with_items: "{{ sshd_package_name }}"
+
+  tags:
+    - sshd_install
+    - sshd

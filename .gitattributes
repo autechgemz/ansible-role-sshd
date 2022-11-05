@@ -1,0 +1,2 @@
+*.yml text eol=lf
+*.j2 text eol=lf

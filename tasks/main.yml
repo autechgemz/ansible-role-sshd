@@ -1,0 +1,30 @@
+---
+
+- block:
+  - name: Set OS family dependency variables
+    include_vars: "{{ lookup('first_found', params) }}" 
+    vars:
+      params:
+        files:
+          - "{{ ansible_os_family }}.yml"
+          - "{{ ansible_distribution_major_version }}.yml"
+          - default.yml
+        paths:
+          - 'vars'
+    tags:
+      - sshd_config
+      - sshd_install
+      - sshd_service
+  - import_tasks: install.yml
+  - import_tasks: config.yml
+  - import_tasks: service.yml
+  when:
+    - (ansible_distribution == 'RedHat' and ansible_distribution_major_version|int >= 7) or
+      (ansible_distribution == 'CentOS' and ansible_distribution_major_version|int >= 7) or
+      (ansible_distribution == 'Rocky' and ansible_distribution_major_version|int >= 8) or
+      (ansible_distribution == 'AlmaLinux' and ansible_distribution_major_version|int >= 8) or
+      (ansible_distribution == 'Fedora' and ansible_distribution_major_version|int >= 35) or
+      (ansible_distribution == 'Ubuntu' and ansible_distribution_major_version|int >= 18)
+  tags:
+    - sshd
+ 

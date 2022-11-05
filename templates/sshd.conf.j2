@@ -1,0 +1,19 @@
+# {{ ansible_managed }}
+{% if sshd_server_config_options is defined and sshd_server_config_options %}
+{% for key, value in sshd_server_config_options.items() %}
+{% if 'HostKey' in key or 'AcceptEnv' in key %}
+{% for line in value %}
+{{ key }} {{ line }}
+{% endfor %}
+{% elif 'Match' in key %}
+{% for line in value %}
+{{ key }} {{ line['criteria'] }} {{ line['pattern'] }}
+{% for match_config, match_value in line['keywords'].items() %}
+  {{ match_config }} {{ match_value }}
+{% endfor %}
+{% endfor %}
+{% else %}
+{{ key }} {{ value }}
+{% endif %}
+{% endfor %}
+{% endif %}
