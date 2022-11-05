@@ -1,5 +1,4 @@
 ---
-
 - name: systemctl restart sshd
   systemd:
     name: sshd
@@ -9,4 +8,3 @@
   systemd:
     name: sshd
     state: reloaded
-
