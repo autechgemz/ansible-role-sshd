@@ -4,6 +4,7 @@
     name: ["{{ item }}"]
     state: present
   with_items: "{{ sshd_package_name }}"
+  become: true
   tags:
     - sshd_install
     - sshd

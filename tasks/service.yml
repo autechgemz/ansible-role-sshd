@@ -4,6 +4,7 @@
     name: "{{ sshd_service_name }}"
     state: "{{ sshd_service_ensure }}"
     enabled: "{{ sshd_service_enable }}"
+  become: true
   tags:
     - sshd_service
     - sshd
