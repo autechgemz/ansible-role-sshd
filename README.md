@@ -29,20 +29,15 @@ None
 
 ## Role Variables
 
-### sshd_package_name
+### sshd_debug
+
 ```
-sshd_package_name:
-  - openssh-server
+sshd_debug: false
 ```
 
 ### sshd_package_ensure
 ```
-sshd_package_ensure: 'installed'
-```
-
-### sshd_service_name
-```
-sshd_service_name: 'sshd'
+sshd_package_ensure: 'present'
 ```
 
 ### sshd_service_ensure
@@ -111,6 +106,36 @@ sshd_server_config_options:
       pattern: 'bobs'
       keywords:
         PasswordAuthentication: 'yes'
+```
+
+### sshd_client_dropin_config_options
+
+```
+sshd_client_dropin_config_options: []
+```
+
+### sshd_client_dropin_config_purge
+
+```
+sshd_client_dropin_config_purge: false
+```
+
+### sshd_server_dropin_config_options
+
+```
+sshd_server_dropin_config_options: []
+```
+
+### sshd_server_dropin_config_purge
+
+```
+sshd_server_dropin_config_purge: false
+```
+
+### sshd_dropin_config_manage
+
+```
+sshd_dropin_config_manage: false
 ```
 
 ## License
