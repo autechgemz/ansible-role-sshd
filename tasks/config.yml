@@ -1,54 +1,47 @@
 ---
-- block:
-  - name: remove generated files by the OS installer
-    file:
-      path: "{{ item }}"
-      state: absent
-    with_items: "{{ sshd_remove_default_files }}"
-    notify: systemctl restart sshd
-    when:
-      - sshd_remove_default_files is defined
-      - ansible_os_family == 'RedHat' and ansible_distribution_major_version|int >= 8
-  - name: manage SSH daemon option
-    template:
-      src: sshd.j2
-      dest: /etc/sysconfig/sshd
-      owner: root
-      group: root
-      mode: 0640
-    notify: systemctl restart sshd
-    when:
-      - ansible_os_family == 'RedHat'
-      - sshd_daemon_config_options is defined and sshd_daemon_config_options
-  - name: manage SSH daemon option
-    template:
-      src: sshd.j2
-      dest: /etc/default/ssh
-      owner: root
-      group: root
-      mode: 0640
-    notify: systemctl restart sshd
-    when:
-      - ansible_os_family == 'Debian'
-      - sshd_daemon_config_options is defined and sshd_daemon_config_options
-  - name: manage SSH server configration
-    template:
-      src: sshd.conf.j2
-      dest: /etc/ssh/sshd_config
-      owner: root
-      group: root
-      mode: 0600
-    notify: systemctl restart sshd
-    when: sshd_server_config_options is defined and sshd_server_config_options
-  - name: manage SSH client configration
-    template:
-      src: ssh.conf.j2
-      dest: /etc/ssh/ssh_config
-      owner: root
-      group: root
-      mode: 0644
-    when: sshd_client_config_options is defined and sshd_client_config_options
+- name: config tasks
   become: true
   tags:
     - sshd_config
     - sshd
+  block:
+    - name: merge daemon configration
+      ansible.builtin.set_fact:
+        sshd_daemon_config_merged: "{{ sshd_daemon_config_default | ansible.builtin.combine(sshd_daemon_config_options, recursive=True) }}"
+    - name: merge client configration
+      ansible.builtin.set_fact:
+        sshd_client_config_merged: "{{ sshd_client_config_default | ansible.builtin.combine(sshd_client_config_options, recursive=True) }}"
+    - name: merge server configration
+      ansible.builtin.set_fact:
+        sshd_server_config_merged: "{{ sshd_server_config_default | ansible.builtin.combine(sshd_server_config_options, recursive=True) }}"
+
+    - name: debug variables
+      include_tasks: debug/config.yml
+      when: sshd_debug is defined and sshd_debug
+
+    - name: manage daemon configration
+      ansible.builtin.template:
+        src: sshd.j2
+        dest: "{{ sshd_daemon_config_file }}"
+        owner: root
+        group: root
+        mode: "0644"
+      notify: Restart sshd
+      when: sshd_daemon_config_merged is defined and sshd_daemon_config_merged
+    - name: manage client configration
+      ansible.builtin.template:
+        src: ssh.conf.j2
+        dest: "{{ sshd_client_config_file }}"
+        owner: root
+        group: root
+        mode: "0644"
+      when: sshd_client_config_merged is defined and sshd_client_config_merged
+    - name: manage server configration
+      ansible.builtin.template:
+        src: sshd.conf.j2
+        dest: "{{ sshd_server_config_file }}"
+        owner: root
+        group: root
+        mode: "0600"
+      notify: Reload sshd
+      when: sshd_server_config_merged is defined and sshd_server_config_merged

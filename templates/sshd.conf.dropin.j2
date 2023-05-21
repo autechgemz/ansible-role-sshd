@@ -1,0 +1,27 @@
+# {{ ansible_managed }}
+{% if item.content is defined and item.content %}
+{%   for sshd_dropin_keys, sshd_dropin_values in item.content.items() %}
+{%     if sshd_dropin_keys == 'Match' %}
+{%       for values in sshd_dropin_values %}
+{{         sshd_dropin_keys }}{{ values.criteria | default('All') | indent(1, true) }}{{ values.pattern | indent(1, true) }}
+{%         for key, value in values.content.items() %}
+{%           if value is iterable and (value is not string and value is not mapping) %}
+{%             for line in value %}
+{{               key | indent(2, true) }} {{ line }}
+{%             endfor %}
+{%           elif value == "" or value == None %}
+{%           else %}
+{{             key | indent(2, true) }} {{ value }}
+{%           endif %}
+{%         endfor %}
+{%       endfor %}
+{%     elif sshd_dropin_values is iterable and (sshd_dropin_values is not string and sshd_dropin_values is not mapping) %}
+{%       for values in sshd_dropin_values %}
+{{         sshd_dropin_keys }} {{ values | string }}
+{%       endfor %}
+{%     elif sshd_dropin_values == "" or sshd_dropin_values == None %}
+{%     else %}
+{{       sshd_dropin_keys }} {{ sshd_dropin_values }}
+{%     endif %}
+{%   endfor %}
+{% endif %}

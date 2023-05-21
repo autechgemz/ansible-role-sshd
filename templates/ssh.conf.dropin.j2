@@ -1,9 +1,9 @@
 # {{ ansible_managed }}
-{% if sshd_client_config_merged is defined and sshd_client_config_merged %}
-{%   for ssh_config_keys, ssh_config_values in sshd_client_config_merged.items() %}
-{%     if ssh_config_keys == 'Host' %}
-{%       for values in ssh_config_values %}
-{{         ssh_config_keys }}{{ values.pattern | indent(1, true) }}
+{% if item.content is defined and item.content %}
+{%   for ssh_dropin_keys, ssh_dropin_values in item.content.items() %}
+{%     if ssh_dropin_keys == 'Host' %}
+{%       for values in ssh_dropin_values %}
+{{         ssh_dropin_keys }}{{ values.pattern | indent(1, true) }}
 {%         for key, value in values.content.items() %}
 {%           if value is iterable and (value is not string and value is not mapping) %}
 {%             for line in value %}
@@ -15,8 +15,8 @@
 {%           endif %}
 {%         endfor %}
 {%       endfor %}
-{%     elif ssh_config_keys == 'Match' %}
-{%       for values in ssh_config_values %}
+{%     elif ssh_dropin_keys == 'Match' %}
+{%       for values in ssh_dropin_values %}
 {{         ssh_config_keys }}{{ values.criteria | default('All') | indent(1, true) }}{{ values.pattern | indent(1, true) }}
 {%         for key, value in values.content.items() %}
 {%           if value is iterable and (value is not string and value is not mapping) %}
@@ -29,13 +29,13 @@
 {%           endif %}
 {%         endfor %}
 {%       endfor %}
-{%     elif ssh_config_values is iterable and (ssh_config_values is not string and ssh_config_values is not mapping) %}
-{%       for values in ssh_config_values %}
-{{         ssh_config_keys }} {{ values | string }}
+{%     elif ssh_dropin_values is iterable and (ssh_dropin_values is not string and ssh_dropin_values is not mapping) %}
+{%       for values in ssh_dropin_values %}
+{{         ssh_dropin_keys }} {{ values | string }}
 {%       endfor %}
-{%     elif ssh_config_values == "" or ssh_config_values == None %}
+{%     elif ssh_dropin_values == "" or ssh_dropin_values == None %}
 {%     else %}
-{{       ssh_config_keys }} {{ ssh_config_values }}
+{{       ssh_dropin_keys }} {{ ssh_dropin_values }}
 {%     endif %}
 {%   endfor %}
 {% endif %}

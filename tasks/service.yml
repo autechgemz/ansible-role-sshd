@@ -1,10 +1,13 @@
 ---
-- name: manage sshd service
-  service:
-    name: "{{ sshd_service_name }}"
-    state: "{{ sshd_service_ensure }}"
-    enabled: "{{ sshd_service_enable }}"
+
+- name: service tasks
   become: true
   tags:
     - sshd_service
     - sshd
+  block:
+    - name: ensure service
+      ansible.builtin.service:
+        name: "{{ sshd_service_name }}"
+        state: "{{ sshd_service_ensure }}"
+        enabled: "{{ sshd_service_enable }}"

@@ -1,20 +1,27 @@
 # {{ ansible_managed }}
-{% if sshd_server_config_options is defined and sshd_server_config_options %}
-{% for key, value in sshd_server_config_options.items() %}
-{% if 'HostKey' in key or 'AcceptEnv' in key %}
-{% for line in value %}
-{{ key }} {{ line }}
-{% endfor %}
-{% elif 'Match' in key %}
-{% for line in value %}
-{{ key }} {{ line['criteria'] }} {{ line['pattern'] }}
-{% for match_config, match_value in line['keywords'].items() %}
-  {{ match_config }} {{ match_value }}
-{% endfor %}
-{% endfor %}
-{% else %}
-{{ key }} {{ value }}
+{% if sshd_server_config_merged is defined and sshd_server_config_merged %}
+{%   for sshd_config_keys, sshd_config_values in sshd_server_config_merged.items() %}
+{%     if sshd_config_keys == 'Match' %}
+{%       for values in sshd_config_values %}
+{{         sshd_config_keys }}{{ values.criteria | default('All') | indent(1, true) }}{{ values.pattern | indent(1, true) }}
+{%         for key, value in values.content.items() %}
+{%           if value is iterable and (value is not string and value is not mapping) %}
+{%             for line in value %}
+{{               key | indent(2, true) }} {{ line }}
+{%             endfor %}
+{%           elif value == "" or value == None %}
+{%           else %}
+{{             key | indent(2, true) }} {{ value }}
+{%           endif %}
+{%         endfor %}
+{%       endfor %}
+{%     elif sshd_config_values is iterable and (sshd_config_values is not string and sshd_config_values is not mapping) %}
+{%       for values in sshd_config_values %}
+{{         sshd_config_keys }} {{ values | string }}
+{%       endfor %}
+{%     elif sshd_config_values == "" or sshd_config_values == None %}
+{%     else %}
+{{       sshd_config_keys }} {{ sshd_config_values }}
+{%     endif %}
+{%   endfor %}
 {% endif %}
-{% endfor %}
-{% endif %}
-

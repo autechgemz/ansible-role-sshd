@@ -1,28 +1,28 @@
 ---
-- block:
-  - name: Set OS family dependency variables
-    include_vars: "{{ lookup('first_found', params) }}"
-    vars:
-      params:
-        files:
-          - "{{ ansible_os_family }}.yml"
-          - "{{ ansible_distribution_major_version }}.yml"
-          - default.yml
-        paths:
-          - 'vars'
-    tags:
-      - sshd_config
-      - sshd_install
-      - sshd_service
-  - import_tasks: install.yml
-  - import_tasks: config.yml
-  - import_tasks: service.yml
-  when:
-    - (ansible_distribution == 'RedHat' and ansible_distribution_major_version|int >= 7) or
-      (ansible_distribution == 'CentOS' and ansible_distribution_major_version|int >= 7) or
-      (ansible_distribution == 'Rocky' and ansible_distribution_major_version|int >= 8) or
-      (ansible_distribution == 'AlmaLinux' and ansible_distribution_major_version|int >= 8) or
-      (ansible_distribution == 'Fedora' and ansible_distribution_major_version|int >= 35) or
-      (ansible_distribution == 'Ubuntu' and ansible_distribution_major_version|int >= 18)
+
+- name: main tasks
   tags:
+    - sshd_install
+    - sshd_config
+    - sshd_service
     - sshd
+  block:
+    - name: load dependency variables
+      ansible.builtin.include_vars: "{{ item }}"
+      loop:
+        - "{{ ansible_os_family }}/{{ ansible_distribution }}-{{ ansible_distribution_major_version }}.yml"
+        - "{{ ansible_os_family }}.yml"
+    - name: sshd install tasks
+      ansible.builtin.import_tasks: install.yml
+    - name: sshd configration tasks
+      ansible.builtin.import_tasks: config.yml
+    - name: sshd dropin configration tasks
+      ansible.builtin.import_tasks: dropin.yml
+    - name: sshd service tasks
+      ansible.builtin.import_tasks: service.yml
+  rescue:
+    - name: print Error
+      ansible.builtin.debug:
+        msg: "Unsupport platform or error occurred due to some reason."
+      failed_when: true
+

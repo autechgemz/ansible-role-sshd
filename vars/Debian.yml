@@ -2,3 +2,14 @@
 
 sshd_package_name:
   - openssh-server
+
+sshd_service_name: 'sshd'
+
+sshd_daemon_config_file: '/etc/default/ssh'
+
+sshd_client_config_file: '/etc/ssh/ssh_config'
+
+sshd_server_config_file: '/etc/ssh/sshd_config'
+
+sshd_daemon_config_default:
+  SSHD_OPTS: ''
