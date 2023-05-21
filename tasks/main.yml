@@ -1,28 +1,27 @@
 ---
 
-- name: main tasks
+- name: Main tasks
   tags:
     - sshd_install
     - sshd_config
     - sshd_service
     - sshd
   block:
-    - name: load dependency variables
+    - name: Load dependency variables
       ansible.builtin.include_vars: "{{ item }}"
       loop:
         - "{{ ansible_os_family }}/{{ ansible_distribution }}-{{ ansible_distribution_major_version }}.yml"
         - "{{ ansible_os_family }}.yml"
-    - name: sshd install tasks
+    - name: Install tasks
       ansible.builtin.import_tasks: install.yml
-    - name: sshd configration tasks
+    - name: Config tasks
       ansible.builtin.import_tasks: config.yml
-    - name: sshd dropin configration tasks
+    - name: Dropin config tasks
       ansible.builtin.import_tasks: dropin.yml
-    - name: sshd service tasks
+    - name: Service tasks
       ansible.builtin.import_tasks: service.yml
   rescue:
-    - name: print Error
+    - name: Print Error
       ansible.builtin.debug:
         msg: "Unsupport platform or error occurred due to some reason."
       failed_when: true
-

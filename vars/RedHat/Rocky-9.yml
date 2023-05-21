@@ -9,5 +9,5 @@ sshd_client_config_default:
 
 sshd_server_config_default:
   Include: '/etc/ssh/sshd_config.d/*.conf'
-  AuthorizedKeysFile:	'.ssh/authorized_keys'
-  Subsystem: 'sftp	/usr/libexec/openssh/sftp-server'
+  AuthorizedKeysFile: '.ssh/authorized_keys'
+  Subsystem: 'sftp /usr/libexec/openssh/sftp-server'

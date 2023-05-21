@@ -1,86 +1,20 @@
 ---
 
-- name: Sshd dropin configration task
-  when: sshd_dropin_config_manage is defined and sshd_dropin_config_manage
-  become: true
-  tags:
-    - sshd_dropin
-    - sshd_config
-    - sshd
+- name: Debug dropin config tasks
+  when: sshd_debug is defined and sshd_debug
   block:
-    - name: Search dropin config
-      ansible.builtin.find:
-        paths: "{{ item }}"
-        patterns: "*.conf"
-      with_items:
-        - "{{ sshd_client_dropin_config_dir }}"
-        - "{{ sshd_server_dropin_config_dir }}"
-      register: dropin_list
-
-    - name: List current config
-      ansible.builtin.set_fact:
-        sshd_dropin_config_current: "{{ dropin_list['results'] | map(attribute='files') | flatten | map(attribute='path') | default([]) }}"
-      when: dropin_list is defined
-
-    - debug: var=sshd_dropin_config_current
-      when: sshd_debug is defined and sshd_debug
-
-    - name: List manage client config
-      ansible.builtin.set_fact:
-        sshd_client_dropin_config_temp: "{{ sshd_client_dropin_config_temp | default([]) + [ sshd_client_dropin_config_dir + '/' + item.name ] }}"
-      with_items: "{{ sshd_client_dropin_config_options }}"
-
-    - name: List manage server config
-      ansible.builtin.set_fact:
-        sshd_server_dropin_config_temp: "{{ sshd_server_dropin_config_temp | default([]) + [ sshd_server_dropin_config_dir + '/' + item.name ] }}"
-      with_items: "{{ sshd_server_dropin_config_options }}"
-
-    - debug: var=sshd_client_dropin_config_temp
-      when: sshd_debug is defined and sshd_debug
-    - debug: var=sshd_server_dropin_config_temp
-      when: sshd_debug is defined and sshd_debug
-
-    - name: Merge manage config
-      ansible.builtin.set_fact:
-        sshd_dropin_config_manage: "{{ sshd_client_dropin_config_temp + sshd_server_dropin_config_temp }}"
-      when:
-        - sshd_client_dropin_config_temp is defined
-        - sshd_server_dropin_config_temp is defined
-
-    - debug: var=sshd_dropin_config_manage
-      when: sshd_debug is defined and sshd_debug
-
-    - name: List remove target
-      ansible.builtin.set_fact:
-        sshd_dropin_config_remove: "{{ sshd_dropin_config_current | difference(sshd_dropin_config_manage) if sshd_dropin_config_manage is defined else sshd_dropin_config_current }}"
-
-    - debug: var=sshd_dropin_config_remove
-      when: sshd_debug is defined and sshd_debug
-
-    - name: Remove dropin config
-      ansible.builtin.file:
-        path: "{{ item }}"
-        state: absent
-      when: sshd_dropin_config_remove is defined
-      with_items: "{{ sshd_dropin_config_remove }}"
-
-    - name: Sshd client dropin configuration
-      ansible.builtin.template:
-        src: ssh.conf.dropin.j2
-        dest: "{{ sshd_client_dropin_config_dir }}/{{ item.name }}"
-        mode: "0644"
-        owner: root
-        group: root
-      with_items: "{{ sshd_client_dropin_config_options }}"
-      when: sshd_client_dropin_config_options is defined and sshd_client_dropin_config_options
-
-    - name: Sshd server dropin configuration
-      ansible.builtin.template:
-        src: sshd.conf.dropin.j2
-        dest: "{{ sshd_server_dropin_config_dir }}/{{ item.name }}"
-        mode: "0644"
-        owner: root
-        group: root
-      notify: Reload sshd
-      with_items: "{{ sshd_server_dropin_config_options }}"
-      when: sshd_server_dropin_config_options is defined and sshd_server_dropin_config_options
+    - name: Print sshd_dropin_config_current
+      ansible.builtin.debug:
+        var: sshd_dropin_config_current
+    - name: Print sshd_client_dropin_config_temp
+      ansible.builtin.debug:
+        var: sshd_client_dropin_config_temp
+    - name: Print sshd_server_dropin_config_temp
+      ansible.builtin.debug:
+        var: sshd_server_dropin_config_temp
+    - name: Print sshd_dropin_config_manage
+      ansible.builtin.debug:
+        var: sshd_dropin_config_manage
+    - name: Print sshd_dropin_config_remove
+      ansible.builtin.debug:
+        var: sshd_dropin_config_remove

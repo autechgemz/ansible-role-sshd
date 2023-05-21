@@ -4,17 +4,15 @@ galaxy_info:
   description: Manage OpenSSH client and server configrations.
   author: autechgemz
   license: MIT
-  min_ansible_version: 2.0
+  min_ansible_version: '2.0'
   platforms:
     - name: EL
-      versions:
+      release:
         - 7
         - 8
-    - name: Fedora
-      versions:
-        - 35
+        - 9
     - name: Ubuntu
-      versions:
+      release:
         - bionic
         - focal
         - jammy

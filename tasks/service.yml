@@ -1,12 +1,12 @@
 ---
 
-- name: service tasks
+- name: Service tasks
   become: true
   tags:
     - sshd_service
     - sshd
   block:
-    - name: ensure service
+    - name: Ensure service
       ansible.builtin.service:
         name: "{{ sshd_service_name }}"
         state: "{{ sshd_service_ensure }}"

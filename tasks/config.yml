@@ -1,25 +1,25 @@
 ---
-- name: config tasks
+- name: Config tasks
   become: true
   tags:
     - sshd_config
     - sshd
   block:
-    - name: merge daemon configration
+    - name: Merge daemon configration
       ansible.builtin.set_fact:
         sshd_daemon_config_merged: "{{ sshd_daemon_config_default | ansible.builtin.combine(sshd_daemon_config_options, recursive=True) }}"
-    - name: merge client configration
+    - name: Merge client configration
       ansible.builtin.set_fact:
         sshd_client_config_merged: "{{ sshd_client_config_default | ansible.builtin.combine(sshd_client_config_options, recursive=True) }}"
-    - name: merge server configration
+    - name: Merge server configration
       ansible.builtin.set_fact:
         sshd_server_config_merged: "{{ sshd_server_config_default | ansible.builtin.combine(sshd_server_config_options, recursive=True) }}"
 
-    - name: debug variables
-      include_tasks: debug/config.yml
+    - name: Debug variables
+      ansible.builtin.include_tasks: debug/config.yml
       when: sshd_debug is defined and sshd_debug
 
-    - name: manage daemon configration
+    - name: Manage daemon configration
       ansible.builtin.template:
         src: sshd.j2
         dest: "{{ sshd_daemon_config_file }}"
@@ -28,7 +28,7 @@
         mode: "0644"
       notify: Restart sshd
       when: sshd_daemon_config_merged is defined and sshd_daemon_config_merged
-    - name: manage client configration
+    - name: Manage client configration
       ansible.builtin.template:
         src: ssh.conf.j2
         dest: "{{ sshd_client_config_file }}"
@@ -36,7 +36,7 @@
         group: root
         mode: "0644"
       when: sshd_client_config_merged is defined and sshd_client_config_merged
-    - name: manage server configration
+    - name: Manage server configration
       ansible.builtin.template:
         src: sshd.conf.j2
         dest: "{{ sshd_server_config_file }}"

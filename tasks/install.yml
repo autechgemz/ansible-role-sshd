@@ -1,11 +1,11 @@
 ---
-- name: install tasks
+- name: Install tasks
   become: true
   tags:
     - sshd_install
     - sshd
   block:
-    - name: ensure packages
+    - name: Ensure packages
       ansible.builtin.package:
         name: ["{{ item }}"]
         state: present

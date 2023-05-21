@@ -1,31 +1,31 @@
 ---
-- name: debug config tasks
+- name: Debug config tasks
   when: sshd_debug is defined and sshd_debug
   block:
-    - name: debug daemon configration
-      when: sshd_debug is defined and sshd_debug
-      block:
-        - name: print sshd_daemon_config_options
-          ansible.builtin.debug: var=sshd_daemon_config_options
-        - name: print sshd_daemon_config_default
-          ansible.builtin.debug: var=sshd_daemon_config_default
-        - name: print sshd_daemon_config_merged
-          ansible.builtin.debug: var=sshd_daemon_config_merged
-    - name: debug client configration
-      when: sshd_debug is defined and sshd_debug
-      block:
-        - name: print sshd_client_config_options
-          ansible.builtin.debug: var=sshd_client_config_options
-        - name: print sshd_client_config_default
-          ansible.builtin.debug: var=sshd_client_config_default
-        - name: print sshd_client_config_merged
-          ansible.builtin.debug: var=sshd_client_config_merged
-    - name: debug server configration
-      when: sshd_debug is defined and sshd_debug
-      block:
-        - name: print sshd_server_config_options
-          ansible.builtin.debug: var=sshd_server_config_options
-        - name: print sshd_server_config_default
-          ansible.builtin.debug: var=sshd_server_config_default
-        - name: print sshd_server_config_merged
-          ansible.builtin.debug: var=sshd_server_config_merged
+    - name: Print sshd_daemon_config_options
+      ansible.builtin.debug:
+        var: sshd_daemon_config_options
+    - name: Print sshd_daemon_config_default
+      ansible.builtin.debug:
+        var: sshd_daemon_config_default
+    - name: Print sshd_daemon_config_merged
+      ansible.builtin.debug:
+        var: sshd_daemon_config_merged
+    - name: Print sshd_client_config_options
+      ansible.builtin.debug:
+        var: sshd_client_config_options
+    - name: Print sshd_client_config_default
+      ansible.builtin.debug:
+        var: sshd_client_config_default
+    - name: Print sshd_client_config_merged
+      ansible.builtin.debug:
+        var: sshd_client_config_merged
+    - name: Print sshd_server_config_options
+      ansible.builtin.debug:
+        var: sshd_server_config_options
+    - name: Print sshd_server_config_default
+      ansible.builtin.debug:
+        var: sshd_server_config_default
+    - name: Print sshd_server_config_merged
+      ansible.builtin.debug:
+        var: sshd_server_config_merged
