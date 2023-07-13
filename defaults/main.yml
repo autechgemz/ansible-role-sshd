@@ -23,3 +23,5 @@ sshd_server_dropin_config_purge: false
 sshd_server_config_options: {}
 
 sshd_dropin_config_manage: false
+
+sshd_moduli_secure: true

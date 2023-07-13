@@ -138,6 +138,12 @@ sshd_server_dropin_config_purge: false
 sshd_dropin_config_manage: false
 ```
 
+### sshd_moduli_secure
+
+```
+sshd_moduli_secure: true
+```
+
 ## License
 
 This role is under the MIT License. See the LICENSE file for the full license text.

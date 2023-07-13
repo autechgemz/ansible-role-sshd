@@ -5,6 +5,10 @@
     - sshd_config
     - sshd
   block:
+    - name: Modify Diffie-Hellman moduli
+      ansible.builtin.include_tasks: moduli.yml
+      when: sshd_moduli_secure is defined and sshd_moduli_secure
+
     - name: Merge daemon configration
       ansible.builtin.set_fact:
         sshd_daemon_config_merged: "{{ sshd_daemon_config_default | ansible.builtin.combine(sshd_daemon_config_options, recursive=True) }}"
