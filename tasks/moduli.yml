@@ -12,7 +12,7 @@
         group: root
         mode: '0644'
         remote_src: true
-        force: no
+        force: false
 
     - name: Remove small Diffie-Hellman moduli
       ansible.builtin.shell:

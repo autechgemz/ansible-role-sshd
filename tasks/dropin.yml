@@ -22,11 +22,11 @@
       when: dropin_list is defined
     - name: Assemble dropin client config
       ansible.builtin.set_fact:
-        sshd_client_dropin_config_temp: "{{ sshd_client_dropin_config_temp | default([]) + [ sshd_client_dropin_config_dir + '/' + item.name ] }}"
+        sshd_client_dropin_config_temp: "{{ sshd_client_dropin_config_temp | default([]) + [sshd_client_dropin_config_dir + '/' + item.name] }}"
       with_items: "{{ sshd_client_dropin_config_options }}"
     - name: Assemble dropin server config
       ansible.builtin.set_fact:
-        sshd_server_dropin_config_temp: "{{ sshd_server_dropin_config_temp | default([]) + [ sshd_server_dropin_config_dir + '/' + item.name ] }}"
+        sshd_server_dropin_config_temp: "{{ sshd_server_dropin_config_temp | default([]) + [sshd_server_dropin_config_dir + '/' + item.name] }}"
       with_items: "{{ sshd_server_dropin_config_options }}"
     - name: Assemble dropin configs
       ansible.builtin.set_fact:
