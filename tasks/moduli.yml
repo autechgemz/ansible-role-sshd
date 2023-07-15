@@ -11,6 +11,8 @@
         owner: root
         group: root
         mode: '0644'
+        remote_src: true
+        force: no
 
     - name: Remove small Diffie-Hellman moduli
       ansible.builtin.shell:
