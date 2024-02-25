@@ -1,0 +1,15 @@
+---
+
+sshd_client_dropin_config_dir: '/etc/ssh/ssh_config.d'
+
+sshd_server_dropin_config_dir: '/etc/ssh/sshd_config.d'
+
+sshd_client_config_default:
+  Include: '/etc/ssh/ssh_config.d/*.conf'
+
+sshd_server_config_default:
+  Include: '/etc/ssh/sshd_config.d/*.conf'
+  AuthorizedKeysFile: '.ssh/authorized_keys'
+  PasswordAuthentication: 'no'
+  PermitEmptyPasswords: 'no'
+  Subsystem: 'sftp /usr/libexec/openssh/sftp-server'
