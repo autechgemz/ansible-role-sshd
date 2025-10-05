@@ -3,14 +3,22 @@ driver:
   name: docker
 
 platforms:
-  - name: instance
-    image: ubuntu-sshd-test:jammy   # ビルド後付くタグ
+  - name: ubuntu-jammy-sshd-test
+    image: ubuntu-sshd-test:jammy
     build_image: true
     dockerfile: Dockerfile.ubuntu.jammy
     command: /usr/sbin/sshd -D -e
     privileged: false
     published_ports:
       - 0.0.0.0:2222:22
+  - name: ubuntu-noble-sshd-test
+    image: ubuntu-sshd-test:noble
+    build_image: true
+    dockerfile: Dockerfile.ubuntu.noble
+    command: /usr/sbin/sshd -D -e
+    privileged: false
+    published_ports:
+      - 0.0.0.0:2223:22
 
 provisioner:
   name: ansible
