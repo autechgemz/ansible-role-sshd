@@ -1,0 +1,5 @@
+---
+- name: Converge SSHD role
+  hosts: all
+  roles:
+    - autechgemz.sshd

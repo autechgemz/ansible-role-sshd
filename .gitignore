@@ -1,3 +1,68 @@
-.retry
-__pycache__
+# Ansible
+*.retry
+*.log
+*.tmp
+*.bak
+*.swp
+*.swo
+*.pyc
+*.pyo
+__pycache__/
 .pytest_cache
+.cache/
+.ansible/
+roles/*/.molecule/
+collections/
+inventory/*
+!inventory/example*
+!inventory/*.yml
+!inventory/*.yaml
+
+# Molecule
+.molecule/
+*.pytest_cache/
+.cache/
+*.tox/
+*.coverage
+.coverage.*
+htmlcov/
+test_results/
+junit.xml
+.mypy_cache/
+.pytest_cache/
+*.egg-info/
+.eggs/
+.tox/
+.molecule/
+.molecule_temp/
+*.log
+
+# Python venv
+venv/
+env/
+.env/
+.venv/
+pip-wheel-metadata/
+site/
+build/
+dist/
+
+# VS Code
+.vscode/
+.history/
+*.code-workspace
+
+# System / Editor
+.DS_Store
+Thumbs.db
+.idea/
+*.iml
+*.sublime-project
+*.sublime-workspace
+*.bak
+*.tmp
+
+# Docker / DevContainer
+.devcontainer/.venv/
+.devcontainer/build/
+.devcontainer/.cache/

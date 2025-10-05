@@ -1,0 +1,8 @@
+ansible-core>=2.0.0
+ansible-lint
+molecule[docker,lint]
+molecule-plugins[docker]
+pytest-testinfra
+flake8
+black
+isort

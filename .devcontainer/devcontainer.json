@@ -1,0 +1,56 @@
+{
+	"name": "ansible-role-sshd",
+	"build": {
+		"dockerfile": "Dockerfile",
+		"context": "..",
+		"args": {
+			"DEV_USER": "vscode"
+		}
+	},
+	"features": {
+		"ghcr.io/devcontainers/features/github-cli:1": {
+			"version": "latest"
+		},
+		"ghcr.io/devcontainers/features/docker-outside-of-docker:1": {
+			"version": "latest"
+		}
+	},
+	"runArgs": [
+		"--init",
+		"--name=ansible-role-sshd"
+	],
+	"remoteEnv": {
+		"TZ": "Asia/Tokyo"
+	},
+	"remoteUser": "vscode",
+	"mounts": [
+		"source=${localEnv:HOME}${localEnv:USERPROFILE}/.ssh,target=/home/vscode/.ssh,type=bind,consistency=cached"
+	],
+	"customizations": {
+		"vscode": {
+			"settings": {
+				"terminal.integrated.defaultProfile.linux": "bash",
+				"editor.insertSpaces": true,
+				"editor.tabSize": 2,
+				"files.encoding": "utf8",
+				"files.eol": "\n",
+				"files.insertFinalNewline": true,
+				"files.trimFinalNewlines": true,
+				"files.trimTrailingWhitespace": true,
+				"editor.formatOnSave": true,
+				"[python]": {
+					"editor.defaultFormatter": null,
+					"editor.formatOnSave": false
+				},
+				"files.associations": {
+					"*.yml": "ansible",
+					"docker-compose*.yml": "dockercompose"
+				}
+			},
+			"extensions": [
+				"redhat.ansible",
+				"ms-python.python"
+			]
+		}
+	}
+}
