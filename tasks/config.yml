@@ -7,7 +7,7 @@
   block:
     - name: Modify Diffie-Hellman moduli
       ansible.builtin.include_tasks: moduli.yml
-      when: sshd_moduli_secure is defined and sshd_moduli_secure
+      when: sshd_moduli_secure | default(False)
 
     - name: Merge daemon configration
       ansible.builtin.set_fact:
@@ -21,7 +21,7 @@
 
     - name: Debug variables
       ansible.builtin.include_tasks: debug/config.yml
-      when: sshd_debug is defined and sshd_debug
+      when: sshd_debug | default(False)
 
     - name: Manage daemon configration
       ansible.builtin.template:
@@ -31,7 +31,7 @@
         group: root
         mode: "0644"
       notify: Restart sshd
-      when: sshd_daemon_config_merged is defined and sshd_daemon_config_merged
+      when: (sshd_daemon_config_merged | default({})) | bool
     - name: Manage client configration
       ansible.builtin.template:
         src: ssh.conf.j2
@@ -39,7 +39,7 @@
         owner: root
         group: root
         mode: "0644"
-      when: sshd_client_config_merged is defined and sshd_client_config_merged
+      when: (sshd_client_config_merged | default({})) | bool
     - name: Manage server configration
       ansible.builtin.template:
         src: sshd.conf.j2
@@ -48,4 +48,4 @@
         group: root
         mode: "0600"
       notify: Reload sshd
-      when: sshd_server_config_merged is defined and sshd_server_config_merged
+      when: (sshd_server_config_merged | default({})) | bool

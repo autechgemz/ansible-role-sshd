@@ -3,8 +3,14 @@
   hosts: all
   gather_facts: false
   tasks:
+    - name: Check sshd configuration syntax
+      ansible.builtin.command: sshd -t
+      register: sshd_syntax
+      changed_when: false
+      failed_when: sshd_syntax.rc != 0
+
     - name: Check sshd process is running
-      ansible.builtin.command: pgrep -x sshd
+      ansible.builtin.command: pgrep -u root -x sshd
       register: sshd_pgrep
       changed_when: false
       failed_when: sshd_pgrep.rc != 0

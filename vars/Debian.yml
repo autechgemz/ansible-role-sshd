@@ -3,7 +3,7 @@
 sshd_package_name:
   - openssh-server
 
-sshd_service_name: 'sshd'
+sshd_service_name: 'ssh'
 
 sshd_daemon_config_file: '/etc/default/ssh'
 
