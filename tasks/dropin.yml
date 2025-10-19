@@ -30,7 +30,7 @@
       with_items: "{{ sshd_server_dropin_config_options }}"
     - name: Assemble dropin configs
       ansible.builtin.set_fact:
-        sshd_dropin_config_manage: "{{ sshd_client_dropin_config_temp + sshd_server_dropin_config_temp }}"
+        sshd_dropin_config_managed: "{{ sshd_client_dropin_config_temp + sshd_server_dropin_config_temp }}"
       when:
         - sshd_client_dropin_config_temp is defined
         - sshd_server_dropin_config_temp is defined
@@ -41,12 +41,13 @@
 
     - name: Remove dropin target
       ansible.builtin.set_fact:
-        sshd_dropin_config_remove: "{{ sshd_dropin_config_current | difference(sshd_dropin_config_manage) if sshd_dropin_config_manage is defined else sshd_dropin_config_current }}"
+        sshd_dropin_config_remove: "{{ sshd_dropin_config_current | difference(sshd_dropin_config_managed) if (sshd_dropin_config_managed is defined) else (sshd_dropin_config_current) }}"
+
     - name: Remove dropin config
       ansible.builtin.file:
         path: "{{ item }}"
         state: absent
-      when: sshd_dropin_config_remove is defined
+      when: sshd_dropin_config_remove is defined and (sshd_dropin_config_remove | length > 0)
       with_items: "{{ sshd_dropin_config_remove }}"
 
     - name: Manage client dropin configuration
@@ -68,3 +69,4 @@
       notify: Reload sshd
       with_items: "{{ sshd_server_dropin_config_options }}"
       when: sshd_server_dropin_config_options is defined and sshd_server_dropin_config_options
+
