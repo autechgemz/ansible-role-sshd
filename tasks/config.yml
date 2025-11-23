@@ -31,7 +31,7 @@
         group: root
         mode: "0644"
       notify: Restart sshd
-      when: (sshd_daemon_config_merged | default({})) | bool
+      when: (sshd_daemon_config_merged | default({})) | length > 0
     - name: Manage client configration
       ansible.builtin.template:
         src: ssh.conf.j2
@@ -39,7 +39,7 @@
         owner: root
         group: root
         mode: "0644"
-      when: (sshd_client_config_merged | default({})) | bool
+      when: (sshd_client_config_merged | default({})) | length > 0
     - name: Manage server configration
       ansible.builtin.template:
         src: sshd.conf.j2
@@ -48,4 +48,4 @@
         group: root
         mode: "0600"
       notify: Reload sshd
-      when: (sshd_server_config_merged | default({})) | bool
+      when: (sshd_server_config_merged | default({})) | length > 0
