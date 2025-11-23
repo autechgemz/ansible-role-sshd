@@ -41,7 +41,7 @@
 
     - name: Remove dropin target
       ansible.builtin.set_fact:
-        sshd_dropin_config_remove: "{{ sshd_dropin_config_current | difference(sshd_dropin_config_managed) if (sshd_dropin_config_managed is defined) else (sshd_dropin_config_current) }}"
+        sshd_dropin_config_remove: "{{ sshd_dropin_config_current | difference(sshd_dropin_config_managed) if sshd_dropin_config_managed is defined else sshd_dropin_config_current }}"
 
     - name: Remove dropin config
       ansible.builtin.file:
