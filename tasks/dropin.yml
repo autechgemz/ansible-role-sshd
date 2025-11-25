@@ -65,6 +65,7 @@
         mode: "0644"
         owner: root
         group: root
+        validate: '/usr/bin/ssh -G -F %s localhost >/dev/null'
       with_items: "{{ sshd_client_dropin_config_options }}"
       when:
         - sshd_client_dropin_config_options is defined and sshd_client_dropin_config_options | length > 0
@@ -77,6 +78,7 @@
         mode: "0644"
         owner: root
         group: root
+        validate: '/usr/sbin/sshd -t -f %s'
       notify: Reload sshd
       with_items: "{{ sshd_server_dropin_config_options }}"
       when:
