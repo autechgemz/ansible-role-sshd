@@ -39,6 +39,7 @@
         owner: root
         group: root
         mode: "0644"
+        validate: '/usr/bin/ssh -G -F %s localhost >/dev/null'
       when: (sshd_client_config_merged | default({})) | length > 0
     - name: Manage server configration
       ansible.builtin.template:
@@ -47,5 +48,6 @@
         owner: root
         group: root
         mode: "0600"
+        validate: '/usr/sbin/sshd -t -f %s'
       notify: Reload sshd
       when: (sshd_server_config_merged | default({})) | length > 0

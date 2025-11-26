@@ -13,31 +13,38 @@
         sshd_client_dropin_config_temp: []
         sshd_server_dropin_config_temp: []
 
-    - name: Collect dropin configs
+    - name: Search dropin configs
       ansible.builtin.find:
         paths: "{{ item }}"
         patterns: "*.conf"
-      with_items:
+      loop:
         - "{{ sshd_client_dropin_config_dir }}"
         - "{{ sshd_server_dropin_config_dir }}"
+      when: item | length > 0
       register: dropin_list
 
     - name: Assemble current dropin config
       ansible.builtin.set_fact:
-        sshd_dropin_config_current: "{{ dropin_list['results'] | map(attribute='files') | flatten | map(attribute='path') | default([]) }}"
+        sshd_dropin_config_current: "{{ dropin_list['results'] | selectattr('skipped', 'undefined') | map(attribute='files') | flatten | map(attribute='path') | list }}"
       when: dropin_list is defined
 
     - name: Assemble dropin client config (only state=present)
       ansible.builtin.set_fact:
         sshd_client_dropin_config_temp: "{{ sshd_client_dropin_config_temp + [sshd_client_dropin_config_dir + '/' + item.name] }}"
       with_items: "{{ sshd_client_dropin_config_options }}"
-      when: item.state is not defined or item.state == 'present'
+      when:
+        - sshd_client_dropin_config_dir is defined
+        - sshd_client_dropin_config_dir | length > 0
+        - item.state is not defined or item.state == 'present'
 
     - name: Assemble dropin server config (only state=present)
       ansible.builtin.set_fact:
         sshd_server_dropin_config_temp: "{{ sshd_server_dropin_config_temp + [sshd_server_dropin_config_dir + '/' + item.name] }}"
       with_items: "{{ sshd_server_dropin_config_options }}"
-      when: item.state is not defined or item.state == 'present'
+      when:
+        - sshd_server_dropin_config_dir is defined
+        - sshd_server_dropin_config_dir | length > 0
+        - item.state is not defined or item.state == 'present'
 
     - name: Assemble dropin configs
       ansible.builtin.set_fact:
@@ -65,8 +72,10 @@
         mode: "0644"
         owner: root
         group: root
+        validate: '/usr/bin/ssh -G -F %s localhost >/dev/null'
       with_items: "{{ sshd_client_dropin_config_options }}"
       when:
+        - sshd_client_dropin_config_dir is defined and sshd_client_dropin_config_dir | length > 0
         - sshd_client_dropin_config_options is defined and sshd_client_dropin_config_options | length > 0
         - item.state is not defined or item.state == 'present'
 
@@ -77,8 +86,10 @@
         mode: "0644"
         owner: root
         group: root
+        validate: '/usr/sbin/sshd -t -f %s'
       notify: Reload sshd
       with_items: "{{ sshd_server_dropin_config_options }}"
       when:
+        - sshd_server_dropin_config_dir is defined and sshd_server_dropin_config_dir | length > 0
         - sshd_server_dropin_config_options is defined and sshd_server_dropin_config_options | length > 0
         - item.state is not defined or item.state == 'present'

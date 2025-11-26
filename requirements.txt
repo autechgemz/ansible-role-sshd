@@ -1,4 +1,4 @@
-ansible-core>=2.0.0
+ansible-core>=2.0.0,<2.16.14
 ansible-lint
 molecule[docker,lint]
 molecule-plugins[docker]

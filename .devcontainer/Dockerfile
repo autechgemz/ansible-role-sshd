@@ -4,7 +4,6 @@ FROM mcr.microsoft.com/vscode/devcontainers/python:${VARIANT}
 ARG DEBIAN_FRONTEND=noninterractive
 
 COPY requirements.txt /tmp/requirements.txt
-COPY requirements.yml /tmp/requirements.yml
 
 RUN apt-get update \
     && apt-get install -y \
@@ -26,5 +25,4 @@ RUN apt-get update \
     && echo 'eval "$(direnv hook bash)"' >> ~/.bashrc \
     && echo 'eval "$(direnv hook bash)"' >> ~/.bash_profile \
     && pip install --upgrade pip \
-    && pip install -r /tmp/requirements.txt \
-    && ansible-galaxy collection install -r /tmp/requirements.yml
+    && pip install -r /tmp/requirements.txt

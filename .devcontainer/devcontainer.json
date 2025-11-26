@@ -7,16 +7,7 @@
 			"DEV_USER": "vscode"
 		}
 	},
-	"features": {
-		"ghcr.io/devcontainers/features/github-cli:1": {
-			"version": "latest"
-		},
-		"ghcr.io/devcontainers/features/docker-outside-of-docker:1": {
-			"version": "latest"
-		}
-	},
 	"runArgs": [
-		"--init",
 		"--name=ansible-role-sshd"
 	],
 	"remoteEnv": {
@@ -43,8 +34,7 @@
 					"editor.formatOnSave": false
 				},
 				"files.associations": {
-					"*.yml": "ansible",
-					"docker-compose*.yml": "dockercompose"
+					"*.yml": "ansible"
 				}
 			},
 			"extensions": [
