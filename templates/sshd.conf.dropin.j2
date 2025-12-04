@@ -19,7 +19,8 @@
 {%       for values in sshd_dropin_values %}
 {{         sshd_dropin_keys }} {{ values | string }}
 {%       endfor %}
-{%     elif sshd_dropin_values == "" or sshd_dropin_values == None %}
+{%     elif sshd_dropin_values == "" or sshd_dropin_values == None or sshd_dropin_values == '__DELETE__' %}
+{#       Do nothing, this is to remove a config key #}
 {%     else %}
 {{       sshd_dropin_keys }} {{ sshd_dropin_values }}
 {%     endif %}

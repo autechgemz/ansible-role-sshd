@@ -33,7 +33,8 @@
 {%       for values in ssh_config_values %}
 {{         ssh_config_keys }} {{ values | string }}
 {%       endfor %}
-{%     elif ssh_config_values == "" or ssh_config_values == None %}
+{%     elif ssh_config_values == "" or ssh_config_values == None or ssh_config_values == '__DELETE__' %}
+{#       Do nothing, this is to remove a config key #}
 {%     else %}
 {{       ssh_config_keys }} {{ ssh_config_values }}
 {%     endif %}
