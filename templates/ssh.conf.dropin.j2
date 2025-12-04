@@ -33,7 +33,8 @@
 {%       for values in ssh_dropin_values %}
 {{         ssh_dropin_keys }} {{ values | string }}
 {%       endfor %}
-{%     elif ssh_dropin_values == "" or ssh_dropin_values == None %}
+{%     elif ssh_dropin_values == "" or ssh_dropin_values == None or ssh_dropin_values == '__DELETE__' %}
+{#       Do nothing, this is to remove a config key #}
 {%     else %}
 {{       ssh_dropin_keys }} {{ ssh_dropin_values }}
 {%     endif %}
