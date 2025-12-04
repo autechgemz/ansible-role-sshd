@@ -6,16 +6,14 @@ def sshd_merge_config(base_config, override_config, delete_markers=None):
     Merge configuration and process keys/values with deletion markers.
 
     Deletion rules:
-    1. Key level: '_KeyName' → removes 'KeyName' from base_config
+    1. Key level: '_KeyName', '-KeyName', or '#KeyName' → removes 'KeyName' from base_config
     2. Value level (list):
-       - '_value' → removes 'value' from the corresponding list in base_config
-       - '-value' → removes 'value' from the corresponding list in base_config
-       - '#value' → removes 'value' from the corresponding list in base_config
+       - '_value', '-value', or '#value' → removes 'value' from the corresponding list in base_config
 
     Args:
         base_config: Base configuration dictionary
         override_config: Override configuration dictionary
-        delete_markers: List of deletion markers (default: ["_", "-", "#"])
+        delete_markers: List of deletion markers (default: DEFAULT_MARKERS ["_", "-", "#"])
 
     Returns:
         Merged configuration dictionary
