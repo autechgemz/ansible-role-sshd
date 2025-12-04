@@ -11,13 +11,14 @@
 
     - name: Merge daemon configration
       ansible.builtin.set_fact:
-        sshd_daemon_config_merged: "{{ sshd_daemon_config_default | ansible.builtin.combine(sshd_daemon_config_options, recursive=True) }}"
+        sshd_daemon_config_merged: "{{ sshd_daemon_config_default | sshd_merge_config(sshd_daemon_config_options) }}"
     - name: Merge client configration
       ansible.builtin.set_fact:
-        sshd_client_config_merged: "{{ sshd_client_config_default | ansible.builtin.combine(sshd_client_config_options, recursive=True) }}"
+        sshd_client_config_merged: "{{ sshd_client_config_default | sshd_merge_config(sshd_client_config_options) }}"
     - name: Merge server configration
       ansible.builtin.set_fact:
-        sshd_server_config_merged: "{{ sshd_server_config_default | ansible.builtin.combine(sshd_server_config_options, recursive=True) }}"
+        sshd_server_config_merged: "{{ sshd_server_config_default | sshd_merge_config(sshd_server_config_options) }}"
+
 
     - name: Debug variables
       ansible.builtin.include_tasks: debug/config.yml
