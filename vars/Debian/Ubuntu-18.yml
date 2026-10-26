@@ -1,18 +1,5 @@
 ---
 
-sshd_client_dropin_config_dir: '/etc/ssh/ssh_config.d'
-
-sshd_server_dropin_config_dir: '/etc/ssh/sshd_config.d'
-
-sshd_client_config_default:
-  Host:
-    - pattern: '*'
-      content:
-        SendEnv:
-          - 'LANG LC_*'
-        HashKnownHosts: 'yes'
-        GSSAPIAuthentication: 'yes'
-
 sshd_server_config_default:
   ChallengeResponseAuthentication: 'no'
   UsePAM: 'yes'

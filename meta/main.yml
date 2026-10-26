@@ -16,6 +16,9 @@ galaxy_info:
         - bionic
         - focal
         - jammy
+    - name: Debian
+      release:
+        - trixie
   galaxy_tags:
     - ssh
     - sshd
